@@ -1,0 +1,182 @@
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+/* 头部样式 */
+header {
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+.header-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* 导航样式 */
+.category-nav {
+    background: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.category-item {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.category-item:hover,
+.category-item.active {
+    background: #f0f0f0;
+}
+
+/* 工具卡片网格 */
+.tools-grid {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* 工具卡片样式 */
+.tool-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.tool-card:hover {
+    transform: translateY(-5px);
+}
+
+.tool-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.tool-header h3 {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.tag {
+    background: #e9ecef;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.tool-desc {
+    color: #666;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.tool-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.visit-btn {
+    background: #6e8efb;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+}
+
+.visit-btn:hover {
+    background: #5c7cfa;
+}
+
+.category-tag {
+    background: #f8f9fa;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* 底部样式 */
+footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+    .header-content h1 {
+        font-size: 2rem;
+    }
+    
+    .tools-grid {
+        grid-template-columns: 1fr;
+    }
+} 
+
+/* 分类区域样式 */
+.tool-section {
+    padding: 2rem 0;
+    scroll-margin-top: 4rem; /* 为锚点定位预留空间 */
+}
+
+.section-title {
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+    padding: 0 1rem;
+    font-size: 1.8rem;
+    color: #333;
+}
+
+/* 导航链接样式 */
+.category-nav a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 固定导航栏 */
+.category-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+}
+
+/* 分类标签颜色 */
+.category-tag.ai-writing { background: #e3f2fd; }
+.category-tag.ai-drawing { background: #f3e5f5; }
+.category-tag.ai-video { background: #e8f5e9; }
+.category-tag.ai-office { background: #fff3e0; }
+.category-tag.ai-coding { background: #f3e5f5; }
+.category-tag.ai-chat { background: #e1f5fe; }
+.category-tag.ai-search { background: #f1f8e9; } 
