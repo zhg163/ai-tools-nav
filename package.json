@@ -1,0 +1,23 @@
+{
+    "name": "ai-tools-nav",
+    "version": "1.0.0",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.21.2",
+        "jsonwebtoken": "^9.0.0",
+        "mongoose": "^7.6.3",
+        "validator": "^13.7.0"
+    },
+    "scripts": {
+        "start": "node api/index.js",
+        "migrate": "dotenv node scripts/migrate.js"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "devDependencies": {
+        "dotenv-cli": "^7.3.0"
+    }
+}
