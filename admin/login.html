@@ -10,6 +10,7 @@
 <body>
     <div class="login-container">
         <div class="login-box">
+            <!-- 对话框将被插入到这里 -->
             <div class="login-header">
                 <h1>AI工具导航</h1>
                 <p>管理员登录</p>
@@ -23,7 +24,12 @@
                     <label for="password">密码</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-                <div id="error-message" class="error-message" role="alert" aria-live="polite"></div>
+                <div id="error-message" class="error-message" role="alert" aria-live="polite">
+                    <div class="error-content">
+                        <span class="error-icon"></span>
+                        <span class="error-text"></span>
+                    </div>
+                </div>
                 <div class="form-group">
                     <button type="submit" class="primary-btn">登录</button>
                 </div>

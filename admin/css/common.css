@@ -178,4 +178,77 @@ body {
         display: block;
         overflow-x: auto;
     }
+}
+
+/* 对话框样式 */
+.dialog {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    transform: translateY(-50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    z-index: 9999;
+    min-width: 300px;
+    max-width: 400px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-60%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(-50%);
+    }
+}
+
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.dialog-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dialog-icon {
+    font-size: 20px;
+}
+
+.dialog-text {
+    font-size: 16px;
+    color: #333;
+}
+
+.dialog-btn {
+    padding: 8px 24px;
+    background: #1890ff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.dialog-btn:hover {
+    background: #40a9ff;
+}
+
+.dialog-error .dialog-icon {
+    color: #ff4d4f;
+}
+
+.dialog-info .dialog-icon {
+    color: #1890ff;
 } 

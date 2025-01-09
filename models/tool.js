@@ -26,10 +26,6 @@ const toolSchema = new mongoose.Schema({
         ref: 'Category',
         required: [true, '工具分类不能为空']
     },
-    isFree: {
-        type: Boolean,
-        default: false
-    },
     status: {
         type: String,
         enum: ['active', 'inactive'],
@@ -63,6 +59,12 @@ const toolSchema = new mongoose.Schema({
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Admin'
+    },
+    pricing: {
+        type: String,
+        enum: ['free', 'paid'],
+        default: 'free',
+        required: true
     }
 }, {
     timestamps: true,

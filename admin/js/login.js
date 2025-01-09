@@ -1,4 +1,23 @@
-import { apiRequest, showError } from './common.js';
+import { apiRequest, showDialog } from './common.js';
+
+// 添加全局错误处理
+window.onerror = function(msg, url, line, col, error) {
+    console.error('Global error:', {
+        message: msg,
+        url: url,
+        line: line,
+        column: col,
+        error: error
+    });
+    showDebugInfo(`全局错误: ${msg}\n位置: ${url}:${line}:${col}\n${error?.stack || ''}`);
+    return false;
+};
+
+// 添加Promise错误处理
+window.addEventListener('unhandledrejection', function(event) {
+    console.error('Unhandled promise rejection:', event.reason);
+    showDebugInfo(`未处理的Promise错误: ${event.reason}`);
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('登录页面加载完成');
@@ -24,9 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const username = usernameInput.value.trim();
         const password = passwordInput.value.trim();
 
+        // 记录登录尝试（不记录密码）
+        console.log('登录尝试:', { username });
+
         if (!username || !password) {
             console.log('用户名或密码为空');
-            showError('请输入用户名和密码');
+            showDialog('请输入用户名和密码', 'error');
             return;
         }
 
@@ -36,23 +58,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             console.log('准备发送登录请求');
-            const response = await apiRequest('/admin/login', {
+            const response = await apiRequest('/api/admin/login', {
                 method: 'POST',
                 body: JSON.stringify({ username, password })
             });
 
-            console.log('登录请求响应:', response);
+            // 详细记录登录响应（不包含敏感信息）
+            console.log('登录响应:', {
+                success: !!response?.token,
+                hasToken: !!response?.token
+            });
+
             if (response && response.token) {
                 console.log('登录成功，保存token');
                 localStorage.setItem('token', response.token);
-                window.location.href = '/admin/index.html';
+                window.location.replace('/admin/index.html');
             } else {
                 console.log('登录响应中没有token');
-                throw new Error('登录失败：服务器响应格式错误');
+                showDialog('用户名或密码错误', 'error');
+                // 重置密码输入
+                passwordInput.value = '';
+                passwordInput.focus();
             }
         } catch (error) {
-            console.error('登录失败:', error);
-            showError(error.message || '登录失败，请检查用户名和密码');
+            // 详细记录登录错误
+            console.error('登录失败详情:', {
+                error,
+                message: error.message,
+                type: error.constructor.name
+            });
+            showDialog('用户名或密码错误', 'error');
+            
             // 登录失败时重置密码输入
             passwordInput.value = '';
             passwordInput.focus();
@@ -82,4 +118,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-}); 
+});
+
+function showDebugInfo(info) {
+    const debugContent = document.getElementById('debug-content');
+    const debugInfo = document.getElementById('debug-info');
+    if (debugContent && debugInfo) {
+        debugContent.textContent += new Date().toISOString() + ': ' + info + '\n';
+        debugInfo.style.display = 'block';
+    }
+} 

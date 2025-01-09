@@ -3,18 +3,18 @@ const mongoose = require('mongoose');
 const categorySchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, '分类名称不能为空'],
-        unique: true,
+        required: [true, '名称为必填项'],
         trim: true
     },
     code: {
         type: String,
-        required: [true, '分类代码不能为空'],
+        required: [true, '代码为必填项'],
         unique: true,
         trim: true
     },
     description: {
         type: String,
+        required: [true, '描述为必填项'],
         trim: true
     },
     weight: {
@@ -30,5 +30,4 @@ const categorySchema = new mongoose.Schema({
     timestamps: true
 });
 
-const Category = mongoose.model('Category', categorySchema);
-module.exports = Category; 
+module.exports = mongoose.model('Category', categorySchema); 

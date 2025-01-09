@@ -9,84 +9,36 @@
 </head>
 <body>
     <div class="admin-container">
-        <!-- 导航栏 -->
-        <nav class="nav-bar">
-            <div class="nav-brand">
+        <!-- 左侧导航 -->
+        <nav class="admin-nav">
+            <div class="nav-header">
                 <h1>AI工具导航</h1>
                 <p>管理后台</p>
             </div>
-            <ul class="nav-menu">
-                <li><a href="/admin/index.html" class="active">工具管理</a></li>
-                <li><a href="/admin/categories.html">分类管理</a></li>
-                <li><a href="#" id="logout-btn">退出登录</a></li>
-            </ul>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active">工具管理</a>
+                <a href="categories.html" class="nav-link">分类管理</a>
+                <a href="#" class="nav-link" id="logout">退出登录</a>
+            </div>
         </nav>
 
-        <!-- 主要内容区域 -->
-        <main class="main-content">
-            <div class="content-header">
-                <h2>工具管理</h2>
-                <button class="primary-btn" id="add-tool-btn">添加工具</button>
-            </div>
-
-            <!-- 筛选区域 -->
-            <div class="filter-section">
-                <div class="filter-group">
-                    <label for="category-filter">分类：</label>
-                    <select id="category-filter">
-                        <option value="">全部</option>
-                    </select>
+        <!-- 主要内容区 -->
+        <main class="admin-main">
+            <!-- 工具管理部分 -->
+            <div class="content-section">
+                <div class="content-header">
+                    <h2>工具管理</h2>
+                    <button class="primary-btn" id="add-tool">添加工具</button>
                 </div>
-                <div class="filter-group">
-                    <label for="status-filter">状态：</label>
-                    <select id="status-filter">
-                        <option value="">全部</option>
-                        <option value="active">启用</option>
-                        <option value="inactive">禁用</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="free-filter">收费：</label>
-                    <select id="free-filter">
-                        <option value="">全部</option>
-                        <option value="true">免费</option>
-                        <option value="false">付费</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- 工具列表 -->
-            <div class="table-container">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>名称</th>
-                            <th>分类</th>
-                            <th>描述</th>
-                            <th>URL</th>
-                            <th>免费</th>
-                            <th>状态</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tools-list">
-                        <!-- 工具列表将通过 JavaScript 动态加载 -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- 分页 -->
-            <div class="pagination" id="pagination">
-                <!-- 分页将通过 JavaScript 动态加载 -->
-            </div>
-
-            <!-- 分类管理 -->
-            <section id="category-management" class="tool-section">
-                <h2 class="section-title">分类管理</h2>
-                <button class="primary-btn" id="add-category-btn">添加分类</button>
-
                 <!-- 筛选区域 -->
                 <div class="filter-section">
+                    <div class="filter-group">
+                        <label for="category-filter">分类：</label>
+                        <select id="category-filter">
+                            <option value="">全部</option>
+                            <!-- 分类选项将通过 JavaScript 动态加载 -->
+                        </select>
+                    </div>
                     <div class="filter-group">
                         <label for="status-filter">状态：</label>
                         <select id="status-filter">
@@ -95,65 +47,40 @@
                             <option value="inactive">禁用</option>
                         </select>
                     </div>
+                    <div class="filter-group">
+                        <label for="free-filter">收费：</label>
+                        <select id="free-filter">
+                            <option value="">全部</option>
+                            <option value="free">免费</option>
+                            <option value="paid">付费</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <button class="secondary-btn" id="search-btn">查询</button>
+                        <button class="secondary-btn" id="reset-btn">重置</button>
+                    </div>
                 </div>
-
-                <!-- 分类列表 -->
+                <!-- 工具列表 -->
                 <div class="table-container">
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>名称</th>
-                                <th>代码</th>
-                                <th>描述</th>
-                                <th>状态</th>
-                                <th>操作</th>
+                                <th style="width: 15%">名称</th>
+                                <th style="width: 10%">分类</th>
+                                <th style="width: 25%">描述</th>
+                                <th style="width: 20%">链接</th>
+                                <th style="width: 10%">价格</th>
+                                <th style="width: 10%">状态</th>
+                                <th style="width: 10%">操作</th>
                             </tr>
                         </thead>
-                        <tbody id="categories-list">
-                            <!-- 分类列表将通过 JavaScript 动态加载 -->
+                        <tbody id="tools-list">
+                            <!-- 工具列表将通过 JavaScript 动态加载 -->
                         </tbody>
                     </table>
                 </div>
-
                 <!-- 分页 -->
-                <div class="pagination" id="pagination">
-                    <!-- 分页将通过 JavaScript 动态加载 -->
-                </div>
-            </section>
-
-            <!-- 添加/编辑分类的模态框 -->
-            <div id="category-modal" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 id="modal-title">添加分类</h3>
-                        <button class="close-btn">&times;</button>
-                    </div>
-                    <form id="category-form" class="modal-form">
-                        <input type="hidden" id="category-id">
-                        <div class="form-group">
-                            <label for="category-name">名称</label>
-                            <input type="text" id="category-name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="category-code">代码</label>
-                            <input type="text" id="category-code" name="code" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="category-description">描述</label>
-                            <textarea id="category-description" name="description" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>
-                                <input type="checkbox" id="category-status" name="status" checked>
-                                启用
-                            </label>
-                        </div>
-                        <div class="form-actions">
-                            <button type="submit" class="primary-btn">保存</button>
-                            <button type="button" class="secondary-btn" onclick="hideModal('category-modal')">取消</button>
-                        </div>
-                    </form>
-                </div>
+                <div class="pagination" id="tools-pagination"></div>
             </div>
         </main>
 
@@ -185,10 +112,11 @@
                         <input type="url" id="tool-url" name="url" required>
                     </div>
                     <div class="form-group">
-                        <label>
-                            <input type="checkbox" id="tool-is-free" name="isFree">
-                            免费工具
-                        </label>
+                        <label for="tool-pricing">收费类型</label>
+                        <select id="tool-pricing" name="pricing" required>
+                            <option value="free">免费</option>
+                            <option value="paid">付费</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>

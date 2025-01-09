@@ -3,16 +3,21 @@
     "version": "1.0.0",
     "dependencies": {
         "bcryptjs": "^2.4.3",
+        "cheerio": "^1.0.0",
         "cors": "^2.8.5",
         "dotenv": "^16.0.3",
         "express": "^4.21.2",
         "jsonwebtoken": "^9.0.0",
         "mongoose": "^7.6.3",
+        "tr46": "^3.0.0",
         "validator": "^13.7.0"
     },
     "scripts": {
         "start": "node api/index.js",
-        "migrate": "dotenv node scripts/migrate.js"
+        "migrate": "dotenv node scripts/migrate.js",
+        "migrate:categories": "node scripts/migrate-categories.js",
+        "init-admin": "node scripts/init-admin.js",
+        "check-admin": "node scripts/check-admin.js"
     },
     "engines": {
         "node": ">=14.0.0"

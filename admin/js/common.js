@@ -14,51 +14,40 @@ function checkAuth() {
 // 通用 API 请求函数
 async function apiRequest(endpoint, options = {}) {
     const token = localStorage.getItem('token');
-    const defaultOptions = {
-        headers: {
-            'Content-Type': 'application/json',
-            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-        }
+    // 设置默认headers
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
     };
 
-    const url = `${API_BASE_URL}${endpoint}`;
-    console.log('发送请求到:', url, '选项:', { ...options, headers: defaultOptions.headers });
+    const url = endpoint.startsWith('/api') ? endpoint : `/api${endpoint}`;
+    console.log('API请求:', { url, options });
 
     try {
         const response = await fetch(url, {
-            ...defaultOptions,
             ...options,
             headers: {
-                ...defaultOptions.headers,
-                ...(options.headers || {})
+                ...headers,
+                ...options.headers
             }
         });
 
-        console.log('收到响应:', {
-            status: response.status,
-            statusText: response.statusText,
-            headers: Object.fromEntries(response.headers.entries())
-        });
-
-        if (response.status === 401) {
-            localStorage.removeItem('token');
-            window.location.href = '/admin/login.html';
-            return null;
-        }
-
+        console.log('API响应状态:', response.status);
         const data = await response.json();
-        console.log('响应数据:', data);
+        console.log('API响应数据:', data);
 
         if (!response.ok) {
+            console.error('API请求失败:', {
+                status: response.status,
+                statusText: response.statusText,
+                data
+            });
             throw new Error(data.message || '请求失败');
         }
 
         return data;
     } catch (error) {
-        console.error('API 请求错误:', error);
-        if (error instanceof TypeError && error.message.includes('JSON')) {
-            console.error('JSON 解析错误，原始响应:', await response.text());
-        }
+        console.error('API请求失败:', error);
         throw error;
     }
 }
@@ -68,11 +57,26 @@ function showError(message, elementId = 'error-message') {
     console.log('显示错误消息:', message);
     const errorElement = document.getElementById(elementId);
     if (errorElement) {
-        errorElement.textContent = message;
-        errorElement.style.display = 'block';
+        // 设置消息内容
+        errorElement.innerHTML = `
+            <div class="error-content">
+                <span class="error-icon">❌</span>
+                <span class="error-text">${message}</span>
+            </div>
+        `;
+        
+        // 显示错误消息
+        errorElement.classList.add('show');
+        
         setTimeout(() => {
-            errorElement.style.display = 'none';
-        }, 3000);
+            errorElement.classList.remove('show');
+        }, 5000);
+
+        // 记录到调试信息
+        const debugContent = document.getElementById('debug-content');
+        if (debugContent) {
+            debugContent.textContent += `${new Date().toISOString()} - Error: ${message}\n`;
+        }
     } else {
         console.error('未找到错误消息元素:', elementId);
     }
@@ -189,12 +193,65 @@ function renderPagination(currentPage, totalPages, onPageChange) {
     pagination.appendChild(nextButton);
 }
 
+// 显示对话框
+function showDialog(message, type = 'info') {
+    // 移除可能存在的旧对话框
+    const oldDialog = document.querySelector('.dialog');
+    if (oldDialog) {
+        oldDialog.remove();
+    }
+
+    // 获取登录表单元素
+    const loginForm = document.querySelector('.login-form');
+    if (!loginForm) {
+        console.error('未找到登录表单元素');
+        return;
+    }
+
+    const dialog = document.createElement('div');
+    dialog.className = `dialog dialog-${type}`;
+    dialog.innerHTML = `
+        <div class="dialog-content">
+            <div class="dialog-message">
+                <span class="dialog-icon">${type === 'error' ? '❌' : '⚠️'}</span>
+                <span class="dialog-text">${message}</span>
+            </div>
+            <button class="dialog-btn" onclick="this.parentElement.parentElement.remove()">确定</button>
+        </div>
+    `;
+
+    // 确保对话框可见
+    dialog.style.display = 'block';
+    dialog.style.visibility = 'visible';
+    dialog.style.opacity = '1';
+
+    // 将对话框插入到用户名输入框之前
+    const usernameGroup = loginForm.querySelector('.form-group');
+    loginForm.insertBefore(dialog, usernameGroup);
+
+    // 添加调试日志
+    console.log('对话框已创建:', {
+        message,
+        type,
+        dialogElement: dialog,
+        formElement: loginForm
+    });
+
+    // 自动关闭时间延长
+    setTimeout(() => {
+        if (dialog && dialog.parentElement) {
+            dialog.remove();
+        }
+    }, 5000);
+}
+
 // 导出工具函数
 export {
     checkAuth,
     apiRequest,
     showError,
     showSuccess,
+    showDialog,
     formatDate,
     showModal,
     hideModal,

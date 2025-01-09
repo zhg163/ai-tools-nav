@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const cors = require('cors');
 require('dotenv').config();
+const tr46 = require('tr46');
 
 // 导入模型（这里会自动连接数据库）
 const { Admin } = require('./models');
